@@ -17,6 +17,30 @@ resource "aws_autoscaling_group" "ponkotuy-eks" {
     value = "owned"
     propagate_at_launch = true
   }
+
+  tag {
+    key = "k8s.io/cluster-autoscaler/ponkotuy"
+    value = "owned"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key = "eks:cluster-name"
+    propagate_at_launch = true
+    value = "ponkotuy"
+  }
+
+  tag {
+    key = "eks:nodegroup-name"
+    value = "default"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key = "k8s.io/cluster-autoscaler/enabled"
+    value = "true"
+    propagate_at_launch = true
+  }
 }
 
 resource "aws_launch_configuration" "ponkotuy-eks-launch" {
