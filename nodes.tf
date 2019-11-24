@@ -52,3 +52,16 @@ resource "aws_launch_configuration" "ponkotuy-eks-launch" {
 data "aws_ssm_parameter" "eks-image-id" {
   name = "/aws/service/eks/optimized-ami/${var.eks_version}/amazon-linux-2/recommended/image_id"
 }
+
+resource "aws_eks_node_group" "ponkotuy-default" {
+  cluster_name = aws_eks_cluster.ponkotuy-eks.name
+  node_group_name = "default"
+  node_role_arn = aws_iam_role.eks-node-role.arn
+  subnet_ids = [data.aws_subnet.az-a.id]
+
+  scaling_config {
+    desired_size = 1
+    max_size = 2
+    min_size = 1
+  }
+}
