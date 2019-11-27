@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+
+spec:
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+        env: stage
+    spec:
+      containers:
+        - image: "632747955816.dkr.ecr.ap-northeast-1.amazonaws.com/sample-web:latest"
+          name: "web-container"
+          ports:
+            - containerPort: 80

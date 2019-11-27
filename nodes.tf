@@ -46,7 +46,11 @@ resource "aws_autoscaling_group" "ponkotuy-eks" {
 resource "aws_launch_configuration" "ponkotuy-eks-launch" {
   name_prefix = "ponkotuy-eks"
   image_id = data.aws_ssm_parameter.eks-image-id.value
-  instance_type = "t3.micro"
+  instance_type = var.instance_size
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "aws_ssm_parameter" "eks-image-id" {
@@ -58,6 +62,8 @@ resource "aws_eks_node_group" "ponkotuy-default" {
   node_group_name = "default"
   node_role_arn = aws_iam_role.eks-node-role.arn
   subnet_ids = [data.aws_subnet.az-a.id]
+  instance_types = [var.instance_size]
+  disk_size = var.instance_disk_size
 
   scaling_config {
     desired_size = 1
